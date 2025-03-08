@@ -43,7 +43,6 @@ export const updateProfile: RequestHandler = async (req, res) => {
 
 export const self: RequestHandler = async (req, res) => {
   try {
-    console.log("REQ USER FROM SELF", req.user);
     createSuccessResponse(res, { user: req.user }, "User fetched successfully");
   } catch (error) {
     createErrorResponse(res, error, 400);

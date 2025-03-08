@@ -31,7 +31,6 @@ export const protectRoute: RequestHandler = async (req, res, next) => {
     if (!user) {
       return createErrorResponse(res, "User not found", 401);
     }
-    console.log("USER FROM AUTH MIDDLWARE", user);
     req.user = user;
     next();
   } catch (error) {
