@@ -16,6 +16,13 @@ app.use(
 );
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  console.log("Headers:", req.headers);
+  console.log("Cookies:", req.cookies);
+  next();
+});
+
 console.log("CLIENT_URL", process.env.CLIENT_URL);
 app.use("/api/v1", routes);
 server.listen(process.env.PORT, () => {
