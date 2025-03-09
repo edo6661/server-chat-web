@@ -4,7 +4,7 @@ import routes from "./routes/routes";
 import { connectDB } from "./lib/mongoose";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-const app = express();
+import { app, server, io } from "./lib/socket";
 
 app.use(express.json());
 app.use(cookieParser());
@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 
 console.log("CLIENT_URL", process.env.CLIENT_URL);
 app.use("/api/v1", routes);
-app.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, () => {
   console.log(`Server is running on http://localhost:${process.env.PORT}`);
   connectDB();
 });

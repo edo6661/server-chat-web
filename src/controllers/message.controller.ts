@@ -6,6 +6,7 @@ import {
 import User from "../models/user.model";
 import Message from "../models/message.model";
 import cloudinary from "../lib/cloudinary";
+import { getReceiverSocketIdBasedOnUserId, io } from "../lib/socket";
 export const getUserChats: RequestHandler = async (req, res) => {
   const currentUserId = req.user._id;
   try {
@@ -75,6 +76,13 @@ export const sendMessage: RequestHandler = async (req, res) => {
       image: imageUrl,
     });
     await newMessage.save();
+
+    const receiverSocketId = getReceiverSocketIdBasedOnUserId(receiverId);
+    // ! kalo receiver online
+    if (receiverSocketId) {
+      // ! ngirim eventnya cuman ke receiver aja, bukan ke semua connected clients
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     createSuccessResponse(
       res,
